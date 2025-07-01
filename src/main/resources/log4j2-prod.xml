@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+        <Property name="LOG_FILE_PATH">logs</Property>
+    </Properties>
+    
+    <Appenders>
+        <!-- Console Appender - Only ERROR level for production -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+        
+        <!-- File Appender for all logs -->
+        <RollingFile name="FileAppender" fileName="${LOG_FILE_PATH}/security-management-prod.log"
+                     filePattern="${LOG_FILE_PATH}/security-management-prod-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+        
+        <!-- Error File Appender -->
+        <RollingFile name="ErrorFileAppender" fileName="${LOG_FILE_PATH}/security-management-prod-error.log"
+                     filePattern="${LOG_FILE_PATH}/security-management-prod-error-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+        
+        <!-- Performance Appender for production monitoring -->
+        <RollingFile name="PerformanceAppender" fileName="${LOG_FILE_PATH}/security-management-prod-performance.log"
+                     filePattern="${LOG_FILE_PATH}/security-management-prod-performance-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+        
+        <!-- Async Appender for better performance -->
+        <Async name="AsyncConsole">
+            <AppenderRef ref="Console"/>
+        </Async>
+        
+        <Async name="AsyncFile">
+            <AppenderRef ref="FileAppender"/>
+        </Async>
+        
+        <Async name="AsyncErrorFile">
+            <AppenderRef ref="ErrorFileAppender"/>
+        </Async>
+        
+        <Async name="AsyncPerformance">
+            <AppenderRef ref="PerformanceAppender"/>
+        </Async>
+    </Appenders>
+    
+    <Loggers>
+        <!-- Application specific logger - WARN level for production -->
+        <Logger name="com.security" level="WARN" additivity="false">
+            <AppenderRef ref="AsyncFile"/>
+            <AppenderRef ref="AsyncErrorFile" level="ERROR"/>
+        </Logger>
+        
+        <!-- Performance logging for production -->
+        <Logger name="com.security.service.SecurityManagementService" level="INFO" additivity="false">
+            <AppenderRef ref="AsyncPerformance"/>
+        </Logger>
+        
+        <!-- Spring Framework logger - WARN level for production -->
+        <Logger name="org.springframework" level="WARN" additivity="false">
+            <AppenderRef ref="AsyncFile"/>
+            <AppenderRef ref="AsyncErrorFile" level="ERROR"/>
+        </Logger>
+        
+        <!-- Hibernate logger - ERROR level for production -->
+        <Logger name="org.hibernate" level="ERROR" additivity="false">
+            <AppenderRef ref="AsyncFile"/>
+            <AppenderRef ref="AsyncErrorFile" level="ERROR"/>
+        </Logger>
+        
+        <!-- SQL logging - Disabled for production -->
+        <Logger name="org.hibernate.SQL" level="OFF" additivity="false"/>
+        
+        <!-- Root logger -->
+        <Root level="WARN">
+            <AppenderRef ref="AsyncConsole"/>
+            <AppenderRef ref="AsyncFile"/>
+            <AppenderRef ref="AsyncErrorFile" level="ERROR"/>
+        </Root>
+    </Loggers>
+</Configuration> 
