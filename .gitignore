@@ -31,12 +31,60 @@ hs_err_pid*
 .project
 .settings/
 
-# IDEA
+# IntelliJ IDEA
 *.iml
 .idea/
 *.ipr
 *.iws
+*.iws
 out/
+.idea_modules/
+atlassian-ide-plugin.xml
+
+# IntelliJ IDEA - User-specific files
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/assetWizardSettings.xml
+.idea/dictionaries
+.idea/libraries
+.idea/jarRepositories.xml
+
+# IntelliJ IDEA - Module files
+.idea/modules.xml
+.idea/*.iml
+.idea/modules
+
+# IntelliJ IDEA - Run configurations
+.idea/runConfigurations/
+
+# IntelliJ IDEA - Data Sources
+.idea/dataSources/
+.idea/dataSources.local.xml
+
+# IntelliJ IDEA - SQL Dialects
+.idea/sqlDataSources.xml
+
+# IntelliJ IDEA - Dynamic Model
+.idea/dynamic.xml
+
+# IntelliJ IDEA - UI Designer
+.idea/uiDesigner.xml
+
+# IntelliJ IDEA - Coverage
+.idea/codeStyles/
+.idea/inspectionProfiles/
+
+# IntelliJ IDEA - VCS
+.idea/vcs.xml
+
+# IntelliJ IDEA - Misc
+.idea/misc.xml
+.idea/encodings.xml
+.idea/compiler.xml
+.idea/scopes/
+.idea/shelf/
+.idea/.name
 
 # VS Code
 .vscode/
